@@ -318,7 +318,7 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     return telMgr.getNetworkOperatorName();
   }
 
-  @ReactMethod
+  @ReactMethodmarkdown
   public BigInteger getTotalDiskCapacity() {
     try {
       StatFs root = new StatFs(Environment.getRootDirectory().getAbsolutePath());
@@ -464,6 +464,30 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     return sharedPref.getString("installReferrer", null);
   }
 
+  private static String UNKNOWN = "unknown";
+
+  private static String GetSystemPropertyString(String prop) {
+    try {
+      Class<?> c = Class.forName("android.os.SystemProperties");
+      Method get = c.getMethod("get", String.class, String.class);
+      return (String)get.invoke(c, prop, UNKNOWN);
+    } catch (Exception ignored) {
+      ignored.printStackTrace();
+      return null;
+    }
+  }
+
+  private static String GetDeviceSerialNumber() {
+    String serial = "unknown";
+    if (Build.MANUFACTURER.toLowerCase().contains("lenovo")) {
+      serial = GetSystemPropertyString("ro.lenovosn2");
+    }
+    if (serial == null || serial.equals(UNKNOWN)) {
+      serial = Build.SERIAL; // this is NOT usually the serial displayed on the device, but it returns something
+    }
+    return serial;
+  }
+
   @SuppressLint({"MissingPermission", "HardwareIds"})
   private Map<String, Object> generateConstants() {
     HashMap<String, Object> constants = new HashMap<String, Object>();
@@ -512,7 +536,8 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     } catch (ClassNotFoundException e) {
       constants.put("instanceId", "N/A: Add com.google.android.gms:play-services-gcm to your project.");
     }
-    constants.put("serialNumber", Build.SERIAL);
+    //constants.put("serialNumber", Build.SERIAL);
+    constants.put("serialNumber", GetDeviceSerialNumber());
     constants.put("deviceName", deviceName);
     constants.put("systemName", "Android");
     constants.put("systemVersion", Build.VERSION.RELEASE);
