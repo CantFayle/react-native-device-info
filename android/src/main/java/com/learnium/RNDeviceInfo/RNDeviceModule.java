@@ -54,6 +54,7 @@ import java.lang.Runtime;
 import java.net.NetworkInterface;
 import java.math.BigInteger;
 import java.util.concurrent.ExecutionException;
+import java.lang.reflect.Method;
 
 import javax.annotation.Nullable;
 
@@ -318,7 +319,7 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     return telMgr.getNetworkOperatorName();
   }
 
-  @ReactMethodmarkdown
+  @ReactMethod
   public BigInteger getTotalDiskCapacity() {
     try {
       StatFs root = new StatFs(Environment.getRootDirectory().getAbsolutePath());
