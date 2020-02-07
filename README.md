@@ -1,4 +1,4 @@
-# react-native-device-info
+# react-native-device-info 2.3.2
 
 [![npm version](https://badge.fury.io/js/react-native-device-info.svg)](http://badge.fury.io/js/react-native-device-info)
 [![npm total downloads](https://img.shields.io/npm/dt/react-native-device-info.svg)](https://img.shields.io/npm/dt/react-native-device-info.svg)
